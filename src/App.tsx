@@ -49,6 +49,16 @@ function App() {
       }]);
     }
   };
+  const handleProductRemove = (productId: string) => {
+    const index = items.findIndex(item => item.article === productId);
+
+    if (index !== -1) {
+        // Создаем новый массив с удалением первого найденного элемента
+        const updatedItems = [...items];
+        updatedItems.splice(index, 1);
+        setItems(updatedItems);
+    }
+};
 
   if (loading) {
     return (
@@ -91,10 +101,10 @@ function App() {
               <ProductSearch
                 products={products}
                 onProductSelect={handleProductSelect}
+                onProductRemove={handleProductRemove}
                 isLoading={loading}
               />
             </div>
-
             {items.length > 0 && (
               <div className="bg-white p-6 rounded-lg shadow">
                 <h2 className="text-xl font-medium mb-4">Товары в счете</h2>
