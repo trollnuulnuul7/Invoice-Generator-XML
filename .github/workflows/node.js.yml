@@ -24,8 +24,7 @@ jobs:
       - run: npm cache clean --force
       - run: rm -rf node_modules package-lock.json
       - run: npm install
-      - run: npm run build --if-present
-      - run: yarn run build  # Альтернативная команда для сборки, если используется yarn
+      - run: npm run build
 
       # Сохранение артефактов сборки
       - name: Archive production artifacts
@@ -34,3 +33,5 @@ jobs:
         with:
           name: production-build
           path: ./dist/  # Убедитесь, что `dist` — это папка с результатами билда
+
+
