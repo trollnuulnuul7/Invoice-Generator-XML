@@ -43,4 +43,4 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add -f dist
           git commit -m "Add build files from GitHub Actions"
-          git push "https://${ACTIONS_DEPLOY_TEST}@github.com/${{ github.repository }}.git" HEAD:main
+          git push "https://x-access-token:${ACTIONS_DEPLOY_TEST}@github.com/${{ github.repository }}.git" HEAD:main
