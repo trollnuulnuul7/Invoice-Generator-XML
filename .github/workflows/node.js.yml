@@ -33,7 +33,7 @@ jobs:
       - name: Check build directory
         run: ls -la dist
 
-      # Коммитим и пушим собранные файлы в репозиторий, игнорируя .gitignore
+     # Коммитим и пушим собранные файлы в репозиторий, используя ACTIONS_DEPLOY_TEST для аутентификации
       - name: Commit and push dist to GitHub
         if: success()
         env:
