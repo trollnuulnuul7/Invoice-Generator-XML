@@ -16,22 +16,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm cache clean --force
-      - run: rm -rf node_modules package-lock.json
+
       - run: npm install
       - run: npm run build
 
-      # Сохранение артефактов сборки
-      - name: Archive production artifacts
+      - name: Commit and push dist to GitHub
         if: success()
-        uses: actions/upload-artifact@v3
-        with:
-          name: production-build
-          path: ./dist/  # Убедитесь, что `dist` — это папка с результатами билда
-
-
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist
+          git commit -m "Add build files from GitHub Actions"
+          git push origin HEAD:main
