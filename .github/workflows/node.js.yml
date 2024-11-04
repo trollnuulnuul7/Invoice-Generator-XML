@@ -1,31 +1,38 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+stages:
+  - install
+  - build
 
-name: Node.js CI
+variables:
+  NODE_ENV: "production"
+  VITE_VERSION: "5.4.10"  # Указываем версию Vite
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+cache:
+  paths:
+    - node_modules/
+    - .yarn/cache
 
-jobs:
-  build:
+before_script:
+  - 'echo "Using Node.js version $(node -v)"'
+  - 'echo "Using Vite version $VITE_VERSION"'
 
-    runs-on: ubuntu-latest
+install_dependencies:
+  stage: install
+  image: node:18  # Замените на нужную версию Node.js
+  script:
+    - yarn install
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+      - .yarn/cache
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+build:
+  stage: build
+  image: node:18  # Замените на нужную версию Node.js
+  script:
+    - yarn run build
+  artifacts:
+    paths:
+      - dist/
+  only:
+    - main  # Указываем ветку, для которой запускается сборка
